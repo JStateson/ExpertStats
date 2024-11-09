@@ -1,5 +1,0 @@
-C:\Users\josep\source\repos\ExpertStats\obj\Debug\ExpertStats.csproj.AssemblyReference.cache
-C:\Users\josep\source\repos\ExpertStats\obj\Debug\ExpertStats.ExpertInfo.resources
-C:\Users\josep\source\repos\ExpertStats\obj\Debug\ExpertStats.Properties.Resources.resources
-C:\Users\josep\source\repos\ExpertStats\obj\Debug\ExpertStats.csproj.GenerateResource.cache
-C:\Users\josep\source\repos\ExpertStats\obj\Debug\ExpertStats.csproj.CoreCompileInputs.cache
