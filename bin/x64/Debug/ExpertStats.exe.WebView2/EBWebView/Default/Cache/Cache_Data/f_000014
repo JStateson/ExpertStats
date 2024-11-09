@@ -1,0 +1,813 @@
+var mastiffUrl = "https://mastiff.ext.hp.com/gw/hpit/cs/mastiff/1.0/MastiffService-1/getOffer";
+
+
+window.setTimeout(harvestData, 500);
+
+var offerResults = null;
+var reqObj = {};
+var pgName = pageName();
+var enableHomePageCarouselBanner = false;
+function harvestData() {
+    var user = {};
+    var product = {};
+    var warranty = {};
+    reqObj.requestId = createReqId();
+    reqObj.offerLocations = "primary,secondary";
+    reqObj.offerName = "";
+    reqObj.acceptanceLevel = "";
+    user.callerId = "hpcommunity";
+
+    user.sessionId = "";
+    user.pageId = pgName;
+    user.HPID = "";
+    user.intent = "";
+    user.locale = globalDataLayer.userCountry + "-" + globalDataLayer.LanguageCode;
+    user.countryCode = globalDataLayer.userCountry;
+    user.language = globalDataLayer.LanguageCode;
+    user.deviceType = "";
+    user.activeHealth = "";
+    user.isNewCustomer = "";
+    user.emailOffers = "";
+    user.gender = "";
+    user.smartFriend = "";
+    user.customerType = "";
+    user.documentId = "";
+
+    product.modelNumber = null;
+    product.serialNumber = null;
+    product.partNumber = "";
+    product.productRegion = "";
+    product.productEndOfLifeCycle = "";
+    product.productEndOfSupportCycle = "";
+    product.productType = "";
+    product.productLine = "";
+    product.productSegment = "";
+    product.productCategory = "";
+    product.productSubCategory = "";
+    product.productSeries = "";
+    product.productSeriesOid = "";
+    product.productSupportCategoryName = "";
+    product.productName = "";
+    product.productNameOid = "";
+    product.productReleasedate = "";
+    product.platform = "";
+    product.includeHTML = "";
+    product.carePackEligible = "";
+    product.currentActiveCarePack = "";
+    product.instantInkEligible = "";
+    product.instantInkCapability = "";
+    product.inkLevel = "";
+    product.instantInkSubscriptionStatus = "";
+    product.loi = "";
+
+    warranty.warrantyState = "";
+    warranty.warrantyStatus = "";
+    warranty.warrantyStatusDetail = "";
+    warranty.warrantyStatusCode = "";
+    warranty.warrantyCaption = "";
+    warranty.warrantyStartdate = "";
+    warranty.warrantyEnddate = "";
+    warranty.warrantyRemainingDays = "";
+    warranty.warrantyTypeCode = "";
+    warranty.warrantyProductTypeCode = "";
+    warranty.warrantyCoveragePeriod = "";
+
+    if (product.modelNumber === null) {
+        product.modelNumber = "";
+    } else {
+        if (product.modelNumber.indexOf("#") > 0)
+            product.modelNumber = product.modelNumber.substring(0, product.modelNumber.length - 4);
+    }
+    if (product.serialNumber === null) {
+        product.serialNumber = "";
+    }
+    if (product.productName === null) {
+        product.productName = "";
+    }
+    if (product.productNameOid === null) {
+        product.productNameOid = "";
+    }
+
+    product.warranty = warranty;
+    reqObj.product = product;
+    reqObj.user = user;
+
+    if (user.sessionId == null || user.sessionId == "") {
+        if (localStorage == null || typeof (localStorage) == "undefined") {
+            var mastiffSessionId = reqObj.requestId.substring(reqObj.requestId.length - 10);
+        } else {
+            var mastiffSessionId = localStorage.getItem('MastiffSessionId');
+            if (mastiffSessionId == null || mastiffSessionId == "" || typeof (mastiffSessionId) == "undefined") {
+                mastiffSessionId = reqObj.requestId.substring(reqObj.requestId.length - 10);
+                localStorage.setItem('MastiffSessionId', mastiffSessionId);
+            }
+        }
+        reqObj.user.sessionId = mastiffSessionId;
+    }
+
+
+    console.log("Request Object");
+    console.log(reqObj);
+    if (staticOfferResults[reqObj.user.locale] !== undefined) {
+        staticOfferResults[reqObj.user.locale].responseId = reqObj.requestId;
+    }
+    $.ajax({
+        url: mastiffUrl,
+        type: "POST",
+        async: true,
+        data: encodeURIComponent(JSON.stringify(reqObj)),
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        success: function (result) {
+            console.log("Mastiff Response Object");
+            console.log(result);
+            offerResults = result.offerCount <= 0 && pgName == "home" && staticOfferResults[reqObj.user.locale] !== undefined ? staticOfferResults[reqObj.user.locale] : result;
+            console.log("Final Response Object");
+            console.log(offerResults);
+
+            if (offerResults.offerCount > 0) {
+                offerResultsHandlement(offerResults);
+                enableHomePageCarouselBanner = true;
+            }
+
+            if (pgName == "home") {
+                if (enableHomePageCarouselBanner) {
+
+                    window.createSPOSBannerCarousel();
+                } else {
+                    $('.custom-homepage-spos-slider').hide();
+                }
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.status);
+            console.log(textStatus);
+            console.log(errorThrown);
+
+            if (pgName == "home") {
+                offerResults = staticOfferResults[reqObj.user.locale] !== undefined ? staticOfferResults[reqObj.user.locale] : null;
+                if (staticOfferResults[reqObj.user.locale] !== undefined) {
+                    offerResultsHandlement(offerResults);
+                    enableHomePageCarouselBanner = true;
+                }
+                console.log("Static Object");
+                console.log(offerResults);
+            } else {
+                console.log("hide element");
+            }
+            if (pgName == "home") {
+                if (enableHomePageCarouselBanner) {
+
+                    window.createSPOSBannerCarousel();
+                } else {
+                    $('.custom-homepage-spos-slider').hide();
+                }
+            }
+        },
+        timeout: 5000
+    });
+
+}
+var showCarouselBannerattempt = 0;
+
+function showCarouselBanner(offerElement) {
+    if (showCarouselBannerattempt < 20) {
+        var carouselBannerDiv = document.getElementById('mastiff-spos-carousel');
+        if (carouselBannerDiv === null) {
+            setTimeout(showCarouselBanner, 500);
+            showCarouselBannerattempt++;
+        } else {
+            var divId = "";
+            divId = divId.concat(offerElement.templatePosition, "_", offerElement.name);
+            if (offerElement.html !== null && offerElement.html !== "" && offerElement.html !== "null"
+                && offerElement.imageURL !== null && offerElement.imageURL !== "" && offerElement.imageURL !== "null"
+                && offerElement.primaryText1 !== null && offerElement.primaryText1 !== "" && offerElement.primaryText1 !== "null"
+                && offerElement.primaryButtonText !== null && offerElement.primaryButtonText !== "" && offerElement.primaryButtonText !== "null"
+                && offerElement.storeURL !== null && offerElement.storeURL !== "" && offerElement.storeURL !== "null") {
+
+                var htmlTemplate = offerElement.html;
+                htmlTemplate = htmlTemplate.replace("%LargeBannerImgPlaceholder%", offerElement.imageURL !== null ? (offerElement.imageURL !== "null" ? offerElement.imageURL : "") : "");
+                htmlTemplate = htmlTemplate.replace("%LargeBannerTitleplaceholder%", offerElement.primaryText1 !== null ? (offerElement.primaryText1 !== "null" ? offerElement.primaryText1 : "") : "");
+                htmlTemplate = htmlTemplate.replace("%LargeBannerDescriptionplaceholder%", offerElement.primaryText2 !== null ? (offerElement.primaryText2 != "null" ? offerElement.primaryText2 : "") : "");
+                htmlTemplate = htmlTemplate.replace("%LargeBannerCTAplaceholder%", offerElement.primaryButtonText !== null ? (offerElement.primaryButtonText != "null" ? offerElement.primaryButtonText : "") : "");
+                htmlTemplate = htmlTemplate.replace("%LargeBannerCTADivId%", divId);
+
+                if (offerElement.templatePosition === "primary") {
+
+                    if ($("#mastiff-spos-1").length === 0) {
+                        $("#mastiff-spos-carousel").append("<li><div class='slides'><div id='mastiff-spos-1'></div></div></li>");
+                    }
+                    if ($("#mastiff-spos-1").children().length === 0) {
+                        $("#mastiff-spos-1").html(htmlTemplate);
+                    }
+                }
+                if (offerElement.templatePosition === "secondary") {
+                    if ($("#mastiff-spos-2").length === 0) {
+                        $("#mastiff-spos-carousel").append("<li><div class='slides'><div id='mastiff-spos-2'></div></div></li>");
+                    }
+                    if ($("#mastiff-spos-2").children().length === 0) {
+                        $("#mastiff-spos-2").html(htmlTemplate);
+                    }
+                }
+
+                $("#" + divId).keypress(function (e) {
+                    var code = e.keyCode || e.which;
+                    if (code == 13) {
+                        offerClickEvent(reqObj, offerResults.offers.offer, this.id);
+                    }
+                });
+                $("#" + divId).click(function () {
+                    offerClickEvent(reqObj, offerResults.offers.offer, this.id);
+                });
+            }
+        }
+    }
+}
+
+// Old
+
+function offerClickEvent(acceptOfferReqObj, offerList, elementIdClicked) {
+    for (offerIndividual in offerList) {
+        if (elementIdClicked === offerList[offerIndividual].templatePosition + "_" + offerList[offerIndividual].name) {
+            var offerElement = offerList[offerIndividual];
+            break;
+        }
+    }
+    acceptOfferReqObj.offerName = offerElement.name;
+    acceptOfferReqObj.acceptanceLevel = "Accepted";
+
+    $.ajax({
+        url: mastiffUrl,
+        type: "POST",
+        async: true,
+        data: encodeURIComponent(JSON.stringify(acceptOfferReqObj)),
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        success: function (result) {
+
+            console.log("Response object - Offer accepted.");
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            console.log("ERROR");
+
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+
+    var finalStoreUrl = offerElement.storeURL;
+    if (offerElement.storeURL.indexOf("MAS-") < 0) {
+        var googleTag = "Offer_id=MAS-" + reqObj.requestId + "_" + offerElement.name;
+        if (offerElement.storeURL.indexOf("?") > -1) {
+            var finalStoreUrl = offerElement.storeURL + "&" + googleTag;
+        } else {
+            var finalStoreUrl = offerElement.storeURL + "?" + googleTag;
+        }
+    }
+
+    window.open(finalStoreUrl, '_blank');
+}
+
+function createReqId() {
+
+    var timestamp = Date.now();
+    var tsLength = String(timestamp).length;
+    var randStrLen = 20 - parseInt(tsLength);
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    var result = "";
+
+    for (var i = 0; i < randStrLen; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return String(timestamp).concat(result);
+}
+
+function AcceptOffer(acceptOfferReqObj) {
+
+    $.ajax({
+        url: mastiffUrl,
+        method: "POST",
+        async: true,
+        data: encodeURIComponent(JSON.stringify(acceptOfferReqObj)),
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        success: function (result) {
+
+            console.log("Response object - Offer accepted.");
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            console.log("ERROR");
+
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+
+}
+
+function pageName() {
+    var url = String(window.location);
+    var urlSegments = url.split("/");
+
+    if (urlSegments[3] === "") {
+        return "home";
+    }
+    return urlSegments[3];
+}
+
+function offerResultsHandlement(resultObj) {
+    for (i = 0; i < resultObj.offerCount; i++) {
+        var element = resultObj.offers.offer[i];
+        if (pgName == "home") {
+            if (element.templatePosition == "primary" || element.templatePosition == "secondary") {
+                showCarouselBanner(element);
+            }
+        }
+    }
+}
+var carouselTemplate = "<div class=LargeBannerTemplate style=background-image:url(%LargeBannerImgPlaceholder%)> <style> .LargeBannerTemplate { width: 970px; min-width: 100%; height: 190px; background: transparent 0% 0% no-repeat padding-box; background-size: cover; border: 1px solid #adadad; opacity: 1; } .LargeBannerContent { max-width: 580px; height: 190px; padding-left: 35px; display: flex; justify-content: center; flex-direction: column; opacity: 1; } .LargeBannerTextDiv { font-family: 'Forma DJR Micro'; color: #FFFFFF; letter-spacing: 0.02em; letter-spacing: 0px; } .LargeBannerTitle { line-height: 25px; font-size: 30px; font-weight: 400; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; } .LargeBannerSubtitleTitle { line-height: 20px; font-size: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; letter-spacing: 0.02em; } .LargeBannerCTADiv { font-family: 'Forma DJR Micro'; font-size: 16px; margin-top: 20px; padding-top: 14px; padding-bottom: 10px; padding-left: 24px; padding-right: 24px; cursor: pointer; text-decoration: none; color: #FFFFFF; border-radius: 12px; line-height: 24px; background-color: #027AAE; letter-spacing: 0.02em; width: max-content; max-width: 290px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .LargeBannerCTADiv:hover { background-color: #035C84; } .LargeBannerCTADiv:active, .LargeBannerCTADiv:focus { background-color: #014667; outline: none; } @media screen and (max-width : 975px) { .LargeBannerTemplate { width: 100%; } } @media screen and (max-width : 570px) { .LargeBannerTemplate { height: 150px; } .arabicContent { padding-right: 25px; } .LargeBannerContent { height: 150px; padding-left: 15px; } .LargeBannerTitle { line-height: 20px; font-size: 22px; margin-bottom: 10px; } .LargeBannerCTADiv { margin-top: 12px; } } </style> <div class=LargeBannerContent> <div class=LargeBannerTextDiv> <div class=LargeBannerTitle>%LargeBannerTitleplaceholder%</div> <div class=LargeBannerSubtitleTitle>%LargeBannerDescriptionplaceholder%</div> </div> <div class=LargeBannerCTADiv tabindex=0 id=%LargeBannerCTADivId%>%LargeBannerCTAplaceholder%</div> </div> </div>";
+var staticOfferResults = {
+    "US-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://www.hp.com/us-en/shop/slp/weekly-deals"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/us-en/shop/cat/care-packs-88343--1"
+                }
+            ]
+        }
+    },
+    "TH-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/th-en/shop/promotion/offer/"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/th-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "MY-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/my-en/shop/promotion/offer/"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/my-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "AU-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://www.hp.com/au-en/shop/sale"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/au-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "NZ-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://www.hp.com/nz-en/shop/sale"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/nz-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "SG-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/sg-en/shop/promotion/offer/"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/sg-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "CA-en": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/ca-en/shop/offer.aspx?p=hp-laptop-deals&lang=en-CA"
+                }
+            ]
+        }
+    },
+    "GB-en": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://www.hp.com/gb-en/shop/offer.aspx?p=c-deals-laptops"
+                }
+            ]
+        }
+    },
+    "HK-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/hk-en/shop/promotion/offer/"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/hk-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "IN-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/in-en/shop/promotion/offer/"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/in-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "ID-en": {
+        "responseId": "",
+        "offerCount": "2",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Don't miss out on HP's weekly deals!",
+                    "primaryText2": "Save up to 30% on select products.",
+                    "primaryButtonText": "Explore",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/id-en/shop/promotion/offer/"
+                },
+                {
+                    "name": "hpcommunity_CarePack",
+                    "html": carouselTemplate,
+                    "offerType": "Generic Care Pack Offer",
+                    "templatePosition": "secondary",
+                    "primaryText1": "Life Happens!",
+                    "primaryText2": "Protect your device & live fearlessly with an HP Care Pack.",
+                    "primaryButtonText": "Learn more",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/700AB896-AFA0-8442-2FB3-AC5DC2F513B7.png",
+                    "storeURL": "https://www.hp.com/id-en/shop/carepackfinder"
+                }
+            ]
+        }
+    },
+    "AR-es": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Aproveche las mejores ofertas",
+                    "primaryText2": "Obtenga grandes descuentos en productos HP seleccionados.",
+                    "primaryButtonText": "Comprar ahora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/ar-es/shop/promociones.html"
+                }
+            ]
+        }
+    },
+    "CL-es": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Aproveche las mejores ofertas",
+                    "primaryText2": "Obtenga grandes descuentos en productos HP seleccionados.",
+                    "primaryButtonText": "Comprar ahora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/cl-es/shop/notebooks.html"
+                }
+            ]
+        }
+    },
+    "ES-es": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Aproveche las mejores ofertas",
+                    "primaryText2": "Obtenga grandes descuentos en productos HP seleccionados.",
+                    "primaryButtonText": "Comprar ahora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/es-es/shop/Default.aspx"
+                }
+            ]
+        }
+    },
+    "CO-es": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Aproveche las mejores ofertas",
+                    "primaryText2": "Obtenga grandes descuentos en productos HP seleccionados.",
+                    "primaryButtonText": "Comprar ahora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/co-es/shop/promociones.html"
+                }
+            ]
+        }
+    },
+    "MX-es": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Aproveche las mejores ofertas",
+                    "primaryText2": "Obtenga grandes descuentos en productos HP seleccionados.",
+                    "primaryButtonText": "Comprar ahora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/mx-es/shop/promociones.html"
+                }
+            ]
+        }
+    },
+    "PE-es": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Aproveche las mejores ofertas",
+                    "primaryText2": "Obtenga grandes descuentos en productos HP seleccionados.",
+                    "primaryButtonText": "Comprar ahora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/pe-es/shop/promociones.html"
+                }
+            ]
+        }
+    },
+    "BR-pt": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "Confira nossas melhores ofertas",
+                    "primaryText2": "Economize em produtos HP selecionados.",
+                    "primaryButtonText": "Comprar agora",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/br-pt/shop/promocoes.html"
+                }
+            ]
+        }
+    },
+    "CN-zh": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "?????????????",
+                    "primaryText2": "?? HP ??????",
+                    "primaryButtonText": "????",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://www.hpstore.cn/promotion/offer"
+                }
+            ]
+        }
+    },
+
+    "HK-zh": {
+        "responseId": "",
+        "offerCount": "1",
+        "offers": {
+            "offer": [
+                {
+                    "name": "hpcommunity_WeeklyDeals",
+                    "html": carouselTemplate,
+                    "offerType": "Weekly Deals Offer",
+                    "templatePosition": "primary",
+                    "primaryText1": "??????????",
+                    "primaryText2": "?? HP ??????",
+                    "primaryButtonText": "????",
+                    "imageURL": "https://h17009.www1.hp.com/pub/msc/293A7CA2-F038-08E3-9F35-2F63FF363372.png",
+                    "storeURL": "https://hp.com/hk-zh/shop/promotion/offer"
+                }
+            ]
+        }
+    }
+};
