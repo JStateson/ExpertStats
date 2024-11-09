@@ -58,6 +58,9 @@
   <PropertyGroup>
     <StartupObject>ExpertStats.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.2895.0, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Web.WebView2.1.0.2895-prerelease\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
@@ -83,34 +86,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpertStats.cs">
+    <Compile Include="Sources\ExpertStats.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExpertStats.Designer.cs">
+    <Compile Include="Sources\ExpertStats.Designer.cs">
       <DependentUpon>ExpertStats.cs</DependentUpon>
     </Compile>
-    <Compile Include="global.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Sources\global.cs" />
+    <Compile Include="Sources\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScatterForm.cs">
+    <Compile Include="Sources\ScatterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ScatterForm.Designer.cs">
+    <Compile Include="Sources\ScatterForm.Designer.cs">
       <DependentUpon>ScatterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TPChart.cs">
+    <Compile Include="Sources\TPChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TPChart.Designer.cs">
+    <Compile Include="Sources\TPChart.Designer.cs">
       <DependentUpon>TPChart.cs</DependentUpon>
     </Compile>
-    <Compile Include="WebForm.cs">
+    <Compile Include="Sources\WebForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WebForm.Designer.cs">
+    <Compile Include="Sources\WebForm.Designer.cs">
       <DependentUpon>WebForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ExpertStats.resx">
+    <EmbeddedResource Include="Sources\ExpertStats.resx">
       <DependentUpon>ExpertStats.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -123,13 +126,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="ScatterForm.resx">
+    <EmbeddedResource Include="Sources\ScatterForm.resx">
       <DependentUpon>ScatterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TPChart.resx">
+    <EmbeddedResource Include="Sources\TPChart.resx">
       <DependentUpon>TPChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WebForm.resx">
+    <EmbeddedResource Include="Sources\WebForm.resx">
       <DependentUpon>WebForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -145,6 +148,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+    <Content Include="Sources\favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.Web.WebView2.1.0.2895-prerelease\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.2895-prerelease\build\Microsoft.Web.WebView2.targets')" />
