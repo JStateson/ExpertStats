@@ -21,6 +21,8 @@ using Microsoft.Web.WebView2.Core;
 using System.Net;
 using System.Reflection;
 
+//This app and source code copyrighted Joseph Stateson November 11, 2024
+
 namespace ExpertStats
 {
     public partial class ExpertInfo : Form
