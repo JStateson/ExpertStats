@@ -167,6 +167,7 @@ namespace ExpertStats
                 }
                 j++;
             }
+            if (nMaxValue <= 0) return;
             Array.Sort(Unsorted,SortInx);
             Array.Reverse(SortInx);
             if (rbAll.Checked) // rescale to 100

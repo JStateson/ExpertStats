@@ -71,9 +71,9 @@
             this.lbDaysWanted.AutoSize = true;
             this.lbDaysWanted.Location = new System.Drawing.Point(280, 28);
             this.lbDaysWanted.Name = "lbDaysWanted";
-            this.lbDaysWanted.Size = new System.Drawing.Size(99, 13);
+            this.lbDaysWanted.Size = new System.Drawing.Size(181, 13);
             this.lbDaysWanted.TabIndex = 2;
-            this.lbDaysWanted.Text = "300 Days expected";
+            this.lbDaysWanted.Text = "300 Days expected (limited by cutoff)";
             // 
             // btnStop
             // 

@@ -38,7 +38,7 @@ namespace ExpertStats
         public static string apPageCountS = "<div class='MessageSubjectIcons '>";
         public static string apBaseLookup = "user/viewprofilepage/user-id/";
         public static string hpBase = "https://h30434.www3.hp.com/t5/";
-        
+        public static string[] sTerm = { "/ct-p/", "/bd-p/", "/tkb-p/", "/bg-p/" };
 
         //https://h30434.www3.hp.com/t5/user/viewprofilepage/user-id/178540/page/1
 
@@ -317,7 +317,7 @@ namespace ExpertStats
         {
             private List<string> KudoBase = new List<string>();  
             private List<string> ReplBase = new List<string>();
-
+            public string sOutTemp = "";
             public class cKitems
             {
                 public int nKudos;
@@ -371,19 +371,22 @@ namespace ExpertStats
             public bool FillBase()
             {
                 string pathKUtable = WhereExpert + "T5Folders.txt";
-                if (File.Exists(pathKUtable))
+                if(!File.Exists(pathKUtable))
                 {
-                    StreamReader sr = new StreamReader(pathKUtable);
-                    while(true)
-                    {
-                        string line = sr.ReadLine();
-                        if(line == null) break;
-                        if (line == "") break;
-                        string[] sL = line.Split(',');
-                        AddBase(sL[0], sL[1]);
-                    }
+                    sOutTemp = "";
+                    MessageBox.Show("You must have the VS2022 project HPSiteMap\r\nAn old one will be created at " + pathKUtable);
+                    string sOld = "https://h30434.www3.hp.com/t5/Notebooks,Notebook\r\nhttps://h30434.www3.hp.com/t5/Notebook-Video-Display-and-Touch,Display\r\nhttps://h30434.www3.hp.com/t5/Business-Notebooks,General\r\nhttps://h30434.www3.hp.com/t5/Notebook-Hardware-and-Upgrade-Questions,Hardware\r\nhttps://h30434.www3.hp.com/t5/Notebook-Wireless-and-Networking,Internet\r\nhttps://h30434.www3.hp.com/t5/Notebook-Operating-System-and-Recovery,OS\r\nhttps://h30434.www3.hp.com/t5/Notebook-Audio,Sound\r\nhttps://h30434.www3.hp.com/t5/Notebook-Boot-and-Lockup,Laptop-Freeze\r\nhttps://h30434.www3.hp.com/t5/Notebook-Software-and-How-To-Questions,Recovery\r\nhttps://h30434.www3.hp.com/t5/Printers,InkJet\r\nhttps://h30434.www3.hp.com/t5/Mobile-Printing-Cloud-Printing,Photo\r\nhttps://h30434.www3.hp.com/t5/Scanning-Faxing-Copying,Scan\r\nhttps://h30434.www3.hp.com/t5/Printer-Setup-Software-Drivers,Software\r\nhttps://h30434.www3.hp.com/t5/Printing-Errors-or-Lights-Stuck-Print-Jobs,PostPrint\r\nhttps://h30434.www3.hp.com/t5/DesignJet-Large-Format-Printers-Digital-Press,DesignJet-LargeFormat-DigitalPress\r\nhttps://h30434.www3.hp.com/t5/Sprocket,sprocket\r\nhttps://h30434.www3.hp.com/t5/Samsung,Samsung\r\nhttps://h30434.www3.hp.com/t5/Printers-Knowledge-Base,printers-knowledge-base\r\nhttps://h30434.www3.hp.com/t5/Printer-Wireless-Networking-Internet,Printer-Wireless-Networking-and-Internet\r\nhttps://h30434.www3.hp.com/t5/Printer-Ink-Cartridges-Print-Quality,Printer-Ink-Cartridges-and-Print-Quality\r\nhttps://h30434.www3.hp.com/t5/Printer-Paper-Jams-Feed-Issues,Printer-Paper-Jams-and-Feed-Issues\r\nhttps://h30434.www3.hp.com/t5/Desktops,DesktopPC\r\nhttps://h30434.www3.hp.com/t5/Desktop-Software-and-How-To-Questions,DesktopQA\r\nhttps://h30434.www3.hp.com/t5/Desktop-Hardware-and-Upgrade-Questions,HardwareDPC\r\nhttps://h30434.www3.hp.com/t5/Desktop-Audio,Monitor\r\nhttps://h30434.www3.hp.com/t5/Desktop-Operating-Systems-and-Recovery,OSandSW\r\nhttps://h30434.www3.hp.com/t5/Desktop-Video-Display-and-Touch,TouchSmartPC\r\nhttps://h30434.www3.hp.com/t5/Desktop-Boot-and-Lockup,lockups\r\nhttps://h30434.www3.hp.com/t5/Sprout-by-HP,Sprout\r\nhttps://h30434.www3.hp.com/t5/Business-PCs-Workstations-and-Point-of-Sale-Systems,Business-PC-Workstation-POS\r\nhttps://h30434.www3.hp.com/t5/Desktop-Wireless-and-Networking,DesktopWirelessNetworking\r\nhttps://h30434.www3.hp.com/t5/Desktop-Knowledge-Base,desktop-knowledge-base\r\nhttps://h30434.www3.hp.com/t5/Gaming,Gaming\r\nhttps://h30434.www3.hp.com/t5/Gaming-Notebooks,GamingNotebooks\r\nhttps://h30434.www3.hp.com/t5/Gaming-Desktops,GamingDesktops\r\nhttps://h30434.www3.hp.com/t5/Gaming-Accessories,GamingAccessories\r\nhttps://h30434.www3.hp.com/t5/Gaming-Knowledge-Base,gaming-knowledge-base\r\nhttps://h30434.www3.hp.com/t5/Apps-Services-Software,Apps-and-Services\r\nhttps://h30434.www3.hp.com/t5/HP-ZCentral-Remote-Boost-and-Connect,RGS\r\nhttps://h30434.www3.hp.com/t5/HP-Instant-Ink,instantink\r\nhttps://h30434.www3.hp.com/t5/Poly-Services,Poly_Services\r\nhttps://h30434.www3.hp.com/t5/Poly-Software,Poly_Software\r\nhttps://h30434.www3.hp.com/t5/Poly-Headsets,Headsets\r\nhttps://h30434.www3.hp.com/t5/Accessories,Headset_Accessories\r\nhttps://h30434.www3.hp.com/t5/Aviation-Specials,Aviation_and_Specials\r\nhttps://h30434.www3.hp.com/t5/Bluetooth-Headsets-Earbuds,Bluetooth_Headsets\r\nhttps://h30434.www3.hp.com/t5/Contact-Center-Headsets,Call_Center_Headsets\r\nhttps://h30434.www3.hp.com/t5/DECT-Wireless-Headsets,DECT_Wireless_Headsets\r\nhttps://h30434.www3.hp.com/t5/USB-Headsets,USB_Headsets\r\nhttps://h30434.www3.hp.com/t5/Poly-Phones,Phones\r\nhttps://h30434.www3.hp.com/t5/Accessories,Phone_Accessories\r\nhttps://h30434.www3.hp.com/t5/UC-Platforms,UC_Platforms\r\nhttps://h30434.www3.hp.com/t5/Desk-and-IP-Conference-Phones,Desk_IP_Conference_Phones\r\nhttps://h30434.www3.hp.com/t5/ATA-VoIP-Adapters,ATA_VoIP_Adapters\r\nhttps://h30434.www3.hp.com/t5/USB-Bluetooth-Speakerphones,USB_Bluetooth_Speakerphones\r\nhttps://h30434.www3.hp.com/t5/PSTN,PSTN\r\nhttps://h30434.www3.hp.com/t5/Wireless-Phone-Solutions,Wireless_Phone_Solutions\r\nhttps://h30434.www3.hp.com/t5/Poly-Video-Conferencing,Video_Conferencing\r\nhttps://h30434.www3.hp.com/t5/Accessories-Cameras,Video_Conferencing_Accessories\r\nhttps://h30434.www3.hp.com/t5/Meeting-Room-Solutions,Meeting_Room_Solutions\r\nhttps://h30434.www3.hp.com/t5/Webcams,Webcams\r\nhttps://h30434.www3.hp.com/t5/Collaboration-Conferencing-Platforms,Collaboration_Conferencing_Platforms\r\nhttps://h30434.www3.hp.com/t5/Poly-International,Poly_International\r\nhttps://h30434.www3.hp.com/t5/Chinese-%E4%B8%AD%E6%96%87,Chinese\r\nhttps://h30434.www3.hp.com/t5/HP-Expert-Center,expert\r\nhttps://h30434.www3.hp.com/t5/Inner-Circle,VIP\r\nhttps://h30434.www3.hp.com/t5/Meet-the-Experts,meetexperts\r\nhttps://h30434.www3.hp.com/t5/Insider-News-and-Events,expertevents\r\nhttps://h30434.www3.hp.com/t5/Technical-Briefings-and-Training-Material,Training_and_Tech_Briefings\r\nhttps://h30434.www3.hp.com/t5/Ideas-and-suggestions,ideas\r\nhttps://h30434.www3.hp.com/t5/Meet-HP-Team,meetteam\r\nhttps://h30434.www3.hp.com/t5/Guidelines-and-Best-Practices,guidelines\r\nhttps://h30434.www3.hp.com/t5/Expert-Portal,expertportal\r\nhttps://h30434.www3.hp.com/t5/Welcome-to-the-Community,about\r\nhttps://h30434.www3.hp.com/t5/First-Time-Here-Learn-How-to-Post-and-More,Hello\r\nhttps://h30434.www3.hp.com/t5/Community-Blog,Bestof\r\nhttps://h30434.www3.hp.com/t5/Private-Boards,Private\r\n";
+                    File.WriteAllText(pathKUtable, sOld);
                 }
-                else return false;
+                StreamReader sr = new StreamReader(pathKUtable);
+                while (true)
+                {
+                    string line = sr.ReadLine();
+                    if (line == null) break;
+                    if (line == "") break;
+                    string[] sL = line.Split(',');
+                    AddBase(sL[0], sL[1]);
+                }
                 return true;
             } 
 

@@ -86,6 +86,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sources\help.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sources\help.Designer.cs">
+      <DependentUpon>help.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sources\ExpertStats.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     <Compile Include="Sources\WebForm.Designer.cs">
       <DependentUpon>WebForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Sources\help.resx">
+      <DependentUpon>help.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sources\ExpertStats.resx">
       <DependentUpon>ExpertStats.cs</DependentUpon>
     </EmbeddedResource>

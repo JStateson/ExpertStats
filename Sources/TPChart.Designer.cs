@@ -147,22 +147,22 @@
             // rbAll
             // 
             this.rbAll.AutoSize = true;
-            this.rbAll.Checked = true;
             this.rbAll.Location = new System.Drawing.Point(20, 76);
             this.rbAll.Name = "rbAll";
             this.rbAll.Size = new System.Drawing.Size(68, 17);
             this.rbAll.TabIndex = 1;
-            this.rbAll.TabStop = true;
             this.rbAll.Text = "All  Posts";
             this.rbAll.UseVisualStyleBackColor = true;
             // 
             // rbKudos
             // 
             this.rbKudos.AutoSize = true;
+            this.rbKudos.Checked = true;
             this.rbKudos.Location = new System.Drawing.Point(20, 42);
             this.rbKudos.Name = "rbKudos";
             this.rbKudos.Size = new System.Drawing.Size(55, 17);
             this.rbKudos.TabIndex = 0;
+            this.rbKudos.TabStop = true;
             this.rbKudos.Text = "Kudos";
             this.rbKudos.UseVisualStyleBackColor = true;
             // 

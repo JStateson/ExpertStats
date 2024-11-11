@@ -40,12 +40,12 @@ namespace ExpertStats
         static string skout = "";
         static int skcnt = 0;
         static bool WritingContacts = false;
+        static bool Counting_SK = false;    //counting kudos or solutions
 
         static string sPagesTotal = "";
         static string kPagesTotal = "";
 
 
-        static string sWE = "";
         static string sContactList = "UsernameID.txt";
         static string sExpertList = "ExpertList.txt";
         static int WhichPB = 0;
@@ -58,7 +58,8 @@ namespace ExpertStats
         static int sol_progress;
         static List<DateTime> sol_Solutions = new List<DateTime>();
         static List<long> sol_LSolutions = new List<long>();
-
+        private bool iStartUp = true;
+        private static bool StopAsync = false;
 
         static string spanT0 = "data-lia-message-uid=";
         static string spanT1 = "<span class=\"DateTime\">";
@@ -66,59 +67,84 @@ namespace ExpertStats
         static string spanT3 = "<span class=\"local-time\">";
         static string spanTe = "</span>";
 
-        //private int dgvE_row = -1;
-        //private int dgvE_col = -1;
-
         private cSortTools SortTools = new cSortTools();
 
+        private static string NameCounted = "";
+        private static string NumCounted = "";
 
         private static HttpClient sharedClient = new()
         {
             BaseAddress = new Uri(hpBase),
         };
 
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.DateToUse = tbYear.Text;
+            Properties.Settings.Default.Save();
+        }
 
         public ExpertInfo()
         {
             InitializeComponent();
-            string dts = tbYear.Text.Trim() + " " + tbCutTime.Text.Trim();
-            Cutoff = DateTime.Now;
-            bool b = dtHPtime(dts, ref Cutoff);
-            if (!b)
-            {
-                MessageBox.Show("date time bad " + dts);
-                return;
-            }
+            SetCutoffDate();
+            CreateNeededStuff();
+            //Start();
+        }
+
+        private void CreateNeededStuff()
+        {
             bool isDebug = Debugger.IsAttached;
             if (!isDebug)
             {
-                //App is running in release mode
-                groupBox1.Enabled = false;
-                groupBox2.Enabled = false;
-                groupBox3.Enabled = false;
-                groupBox8.Enabled = false;
-                btnStop.Enabled = false;
                 WhereExe = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString() + "\\";
                 WhereExpert = WhereExe + "HPexperts\\";
-                lbWhereExe.Text = WhereExpert;
             }
+
+            lbWhereExe.Text = WhereExpert;
+            if (!Directory.Exists(WhereExpert))
+            {
+                Directory.CreateDirectory(WhereExpert);
+            }
+
             KudoBaseTool = new cKudoBase();
-            Start();
+            sContactList = WhereExpert + sContactList;
+            sExpertList = WhereExpert + sExpertList;
+            KudoBaseTool.FillBase();
+            if (!File.Exists(sContactList))
+            {
+                WritingContacts = true;
+                WhichPB = 4;
+                GroupsEnable(false);
+                TimerAcnt.Enabled = true;
+                pbAuthors.Maximum = 4;
+                pbAuthors.Value = 0;
+                object value = GetAsync(sharedClient);
+            }
+            else Start();
         }
-        /*
+
+/*
         How to create a folder at the executable location so that the release app can run on my PC:
         mklink /D "C:\Users\josep\source\repos\ExpertStats\bin\x64\Release\HPexperts" "C:\Users\josep\source\repos\ExpertStats\HP
         use rmdir to remove 
 */
-
+        private void SetCutoffDate()
+        {
+            tbYear.Text = Properties.Settings.Default.DateToUse;
+            string dts = tbYear.Text + " " + tbCutTime.Text;
+            Cutoff = DateTime.Now;
+            bool b = dtHPtime(dts, ref Cutoff);
+            if (!b)
+            {
+                MessageBox.Show("date time bad " + dts + "\r\nChanging to 01-01-2024");
+                tbYear.Text = "01-01-2024";
+                SaveSettings();
+                dtHPtime(tbYear.Text, ref Cutoff);
+            }
+        }
 
         private void Start()
         {
-            sWE = WhereExpert + sContactList;
-            sContactList = sWE;
-            sWE = WhereExpert + sExpertList;
-            sExpertList = sWE;
-            KudoBaseTool.FillBase();
             if (File.Exists(sContactList))
             {
                 ReadContacts();
@@ -127,14 +153,7 @@ namespace ExpertStats
                     ReadExperts();
                 }
             }
-            else
-            {
-                WritingContacts = true;
-                WhichPB = 4;
-                TimerAcnt.Enabled = true;
-                object value = GetAsync(sharedClient);
-            }
-
+            
 
         }
 
@@ -161,7 +180,10 @@ namespace ExpertStats
             pbAuthors.Maximum = AuthorList.Count;
             pbAuthors.Value = 0;
             WhichPB = 0;
+            GroupsEnable(false);
             TimerAcnt.Enabled = true;
+            Counting_SK = true;
+            StopAsync = false;
             object value = GetAsyncS(sharedClient);
         }
 
@@ -259,12 +281,11 @@ namespace ExpertStats
 
         static async Task GetAsync(HttpClient httpClient)
         {
-            string sOut = "";
             int n = 0;
             string jsonResponse="";
-            File.Delete(sContactList);
             for (int i = 1; i < 4; i++)
             {
+                skcnt = i;
                 try
                 {
                     using HttpResponseMessage response = await httpClient.GetAsync(sA + i.ToString() + "/tab/authors");
@@ -275,9 +296,8 @@ namespace ExpertStats
                     Console.WriteLine("Request error: " + e.Message);
                     return;
                 }
-                add_id_name(ref jsonResponse, ref sOut);
+                add_id_name(ref jsonResponse, ref KudoBaseTool.sOutTemp);
             }
-            File.WriteAllText(sContactList, sOut);
             WritingContacts = false;
         }
 
@@ -291,13 +311,13 @@ namespace ExpertStats
             string sID;
             sPagesTotal = "";
             WritingContacts = true;
-
             foreach (cExpert ce in AuthorList)
             {
                 string id = ce.user_id;
+                NameCounted = ce.name;
                 iID = skcnt + 1;
                 sID = "s" + iID.ToString();
-                if (ce.Spages != "-1" && ce.Spages != "")
+                if (ce.Spages != "-1")
                 {
                     skcnt++;
                     continue;
@@ -315,9 +335,9 @@ namespace ExpertStats
                 int i = jsonResponse.LastIndexOf(SolLast);
                 if (i == -1)
                 {
-                    if (jsonResponse.Contains("No Posts Found"))
-                        nPages = "";
-                    else nPages = "1";
+                    //if (jsonResponse.Contains("No Posts Found"))nPages = "";
+                    //else nPages = "0";
+                    nPages = "0";
                 }
                 else
                 {
@@ -326,8 +346,10 @@ namespace ExpertStats
                     Debug.Assert(j != -1);
                     nPages = jsonResponse.Substring(i, j - i);
                 }
+                NumCounted = nPages;
                 ce.Spages = nPages;
                 skcnt++;
+                if (StopAsync) break;
             }
             skcnt = AuthorList.Count;
             WritingContacts = false;
@@ -338,14 +360,13 @@ namespace ExpertStats
             string nPages;
             string jsonResponse;
             skout = "";
-            skcnt = -1;
+            skcnt = 0;
             sPagesTotal = "";
             kud_rtnval = 0;
             foreach (cExpert ce in AuthorList)
             {
-                skcnt++;
+                NameCounted = ce.name;
                 string id = ce.user_id;
-                int iID = skcnt;
                 if (ce.Kpages != "-1")
                 {
                     continue;
@@ -364,7 +385,7 @@ namespace ExpertStats
                 int i = jsonResponse.IndexOf(SolLast);
                 if (i == -1)
                 {
-                    nPages = "";
+                    nPages = "0";
                 }
                 else
                 {
@@ -374,6 +395,8 @@ namespace ExpertStats
                     nPages = jsonResponse.Substring(i, j - i);
                 }
                 ce.Kpages = nPages;
+                NumCounted = nPages;
+                if (StopAsync) break;
             }
             skcnt = AuthorList.Count;
             kud_rtnval = 1;
@@ -436,33 +459,48 @@ namespace ExpertStats
             }
         }
 
+
+        /*
+         *          if(skcnt > pbAuthors.Maximum || skcnt < 0)
+                    {
+                        MessageBox.Show("pb value wrong " + skcnt.ToString() + " " + pbAuthors.Maximum.ToString());
+                        int ii = 0;
+                    }
+        */
         private void TimerAcnt_Tick(object sender, EventArgs e)
-        {
-            
+        {            
             switch (WhichPB)
             {
                 case 0: // COUNT SOLUTIONS
+
                     pbAuthors.Value = skcnt;
+                    
+                    lbCurrentVol.Text = NameCounted;
+                    lbCnt.Text = NumCounted;
                     if (!WritingContacts)
                     {
                         TimerAcnt.Stop();
-                        TimerAcnt.Dispose();
+                        //TimerAcnt.Dispose();
                         pbAuthors.Value = 0;
                         dgvExpert.Invalidate(false);
                         UpdateDGVlist();
-                        TaskFinished();
+                        GroupsEnable(true);
+                        Counting_SK = false;
                     }
                     break;
                 case 1: // COUNTS KUDOS
                     pbAuthors.Value = skcnt;
+                    lbCurrentVol.Text = NameCounted;
+                    lbCnt.Text = NumCounted;
                     if (kud_rtnval != 0)
                     {
                         TimerAcnt.Stop();
-                        TimerAcnt.Dispose();
+                        //TimerAcnt.Dispose();
                         pbAuthors.Value = 0;
                         dgvExpert.Invalidate(false);
                         UpdateDGVlist();
-                        TaskFinished();
+                        GroupsEnable(true);
+                        Counting_SK = false;
                     }
                     break;
                 case 2: // GET SOLUTIONS
@@ -471,12 +509,13 @@ namespace ExpertStats
                     if (sol_rtnval != 0)
                     {
                         TimerAcnt.Stop();
-                        TimerAcnt.Dispose();
+                        //TimerAcnt.Dispose();
                         SaveSolutions(sol_id, ref sol_Solutions);
                         UpdateRawSolCnt(sol_id, sol_Solutions.Count);
                         pbGetSol.Value = 0;
                         bFinishTaskBusy = false;
                         TaskFinished();
+                        StopAsync = true;
                     }
                     break;
                 case 3: // GET KUDOS
@@ -485,28 +524,28 @@ namespace ExpertStats
                     if(!KudoBaseTool.Busy || sol_rtnval != 0)
                     {
                         TimerAcnt.Stop();
-                        TimerAcnt.Dispose();
+                        //TimerAcnt.Dispose();
                         SaveKudoUrls(sol_id);
                         UpdateRawKudoCnt(sol_id, KudoBaseTool.nKudosTotal);
                         pbGetSol.Value = 0;
                         bFinishTaskBusy = false;
                         TaskFinished();
+                        StopAsync = true;
                     }
                     break;
                  case 4:
-                    pbAuthors.Value = skcnt;
-                    
+                    pbAuthors.Value = skcnt;                    
                     if (!WritingContacts)
                     {
                         TimerAcnt.Stop();
-                        TimerAcnt.Dispose();
-                        ReadContacts();
                         pbAuthors.Value = 0;
+                        File.WriteAllText(sContactList,  KudoBaseTool.sOutTemp);
+                        ReadContacts();
                         if (File.Exists(sExpertList))
                         {
                             ReadExperts();
                         }
-                        TaskFinished();
+                        GroupsEnable(true);
                     }
                     break;
                 case 5: // KUDO REFERRALS
@@ -515,12 +554,13 @@ namespace ExpertStats
                     if (!KudoRcvd.bTaskBusy)
                     {
                         TimerAcnt.Stop();
-                        TimerAcnt.Dispose();
+                        //TimerAcnt.Dispose();
                         KudoRcvd.SaveKudoList();
                         KudoRcvd.bTaskDone = true;
                         bFinishTaskBusy = false;
                         pbGetSol.Value = 0;
                         TaskFinished();
+                        StopAsync = true;
                     }
                     break;
             }
@@ -585,8 +625,12 @@ namespace ExpertStats
         private void btnCountKudos_Click(object sender, EventArgs e)
         {
             pbAuthors.Value = 0;
+            pbAuthors.Maximum = AuthorList.Count;
             WhichPB = 1;
+            GroupsEnable(false);
             TimerAcnt.Enabled = true;
+            Counting_SK = true;
+            StopAsync = false;
             object value = GetAsyncK(sharedClient);
         }
 
@@ -617,31 +661,6 @@ namespace ExpertStats
             }
 
         }
-
-        private void FormTaskS(string id, int nPageMax, DateTime Cutoff, string sG)
-        {
-            sol_id = id;
-            sol_nPageMax = nPageMax;
-            sol_sG = sG;
-            sol_rtnval = 0;
-            sol_Solutions.Clear();
-            TimerAcnt.Enabled = true;
-            object value = GetAsyncSOL(sharedClient);
-        }
-
-        private void FormTaskK(string id, int nPageMax, DateTime Cutoff, string sG)
-        {
-            sol_id = id;
-            sol_nPageMax = nPageMax;
-            sol_sG = sG;
-            sol_rtnval = 0;
-            sol_Solutions.Clear();
-            WhichPB = 3;
-            TimerAcnt.Enabled = true;
-            object value = GetAsyncKUD(sharedClient);
-        }
-
-
 
         static async Task GetAsyncKUD(HttpClient httpClient)
         {
@@ -676,6 +695,7 @@ namespace ExpertStats
                     sol_rtnval = 1;
                     KudoBaseTool.Busy = false;
                 }
+                if (StopAsync) return;
             }
         }
 
@@ -691,7 +711,7 @@ namespace ExpertStats
             {
                 bool b = true;
                 int j = 0;
-                sol_progress = i + 1;
+                sol_progress = i;
                 try
                 {
                     using HttpResponseMessage response = await httpClient.GetAsync(sol_sG + (i+1).ToString());
@@ -716,6 +736,7 @@ namespace ExpertStats
                 {
                     sol_rtnval = 1;
                 }
+                if (StopAsync) return;
             }
         }
 
@@ -773,7 +794,6 @@ namespace ExpertStats
 
         private void RunGetSol()
         {
-            int nValidSols = 0;
             if (dgvExpert.SelectedRows.Count <= 0) return;
             bAsyncDone = false;
             DataGridViewRow selectedRow = dgvExpert.SelectedRows[0];
@@ -784,12 +804,20 @@ namespace ExpertStats
             lbCurrentVol.Text = dgvExpert.Rows[dgvE_row].Cells[1].Value.ToString();
             int nPageMax = Convert.ToInt32(dgvExpert.Rows[dgvE_row].Cells[3].Value);
             if (nPageMax > 500) nPageMax = 500;
+            if (nPageMax <= 0) return;
             string sGetSolPage0 = sU + id + "/page/";
             WhichPB = 2;
             pbGetSol.Maximum = nPageMax;
             pbGetSol.Value = 0;
             StartingTasks();
-            FormTaskS(id, nPageMax, Cutoff, sGetSolPage0);
+            sol_id = id;
+            sol_nPageMax = nPageMax;
+            sol_sG = sGetSolPage0;
+            sol_rtnval = 0;
+            sol_Solutions.Clear();
+            TimerAcnt.Enabled = true;
+            StopAsync = false;
+            object value = GetAsyncSOL(sharedClient);
         }
 
         private void btnGetSol_Click(object sender, EventArgs e)
@@ -811,11 +839,20 @@ namespace ExpertStats
             DateTime Cutoff = DateTime.Now;
             int nPageMax = Convert.ToInt32(dgvExpert.Rows[dgvE_row].Cells[5].Value);
             if (nPageMax > 500) nPageMax = 500;
+            if (nPageMax <= 0) return;
             string sGetKudPage0 = sK + id + "/tab/my-kudoed-messages/page/";
             pbGetSol.Maximum = nPageMax;
             pbGetSol.Value = 0;
             StartingTasks();
-            FormTaskK(id, nPageMax, Cutoff, sGetKudPage0);
+            sol_id = id;
+            sol_nPageMax = nPageMax;
+            sol_sG = sGetKudPage0;
+            sol_rtnval = 0;
+            sol_Solutions.Clear();
+            WhichPB = 3;
+            TimerAcnt.Enabled = true;
+            StopAsync = false;
+            object value = GetAsyncKUD(sharedClient);
         }
 
         private void btnGetKudo_Click(object sender, EventArgs e)
@@ -826,7 +863,6 @@ namespace ExpertStats
         private void MakeKUtbl_Click(object sender, EventArgs e)
         {
             string sOut = "";
-            string[] sTerm = { "/ct-p/", "/bd-p/", "/tkb-p/", "/bg-p/" };
             bool bFound;  
 
             string rawSrc = WhereSrc + "..\\HPSiteMap\\SiteMapRaw.txt";
@@ -843,26 +879,30 @@ namespace ExpertStats
                     }
                     if (line == null) break;
 
-                    bFound = false;
+                    bFound = true;
                     for(int j = 0; j < sTerm.Length; j++)
                     {
                         int m = sTerm[j].Length;
                         int i = line.IndexOf(sTerm[j]);
-                        if (i < 0) continue;
+                        if (i < 0)
+                        {
+                            bFound = false;
+                            continue;
+                        }
                         string T5 = line.Substring(0, i);
                         string idBoard = line.Substring(i + m);
                         sOut += T5 + "," + idBoard + Environment.NewLine;
                         line = sr.ReadLine();
-                        bFound = true;
                         break;
                     }
                     if(!bFound)
                         Debug.Assert(false);
                 }
                 sr.Close();
-            }
-            string pathKUtable = WhereExpert + "T5Folders.txt";
-            File.WriteAllText(pathKUtable, sOut);
+                string pathKUtable = WhereExpert + "T5Folders.txt";
+                File.WriteAllText(pathKUtable, sOut);
+            }            
+
         }
 
         private void btnDelContacts_Click(object sender, EventArgs e)
@@ -914,12 +954,14 @@ namespace ExpertStats
                     return;
                 }
                 sol_rtnval = KudoRcvd.KudoParse(ref jsonResponse);
+                if (StopAsync) return;
             }
             KudoRcvd.bTaskBusy = false;
         }
 
         private void btnKudoRef_Click(object sender, EventArgs e)
         {
+            StopAsync = false;
             RunKudoRef();
         }
 
@@ -930,7 +972,8 @@ namespace ExpertStats
             int i = 0;
             foreach (cExpert ce in AuthorList)
             {
-                if ((ce.Spages == "" || ce.Spages == "-1") && (ce.Kpages == "" || ce.Kpages == "-1"))
+                //if ((ce.Spages == "" || ce.Spages == "-1") && (ce.Kpages == "" || ce.Kpages == "-1"))
+                if ((ce.Spages == "0") && (ce.Kpages == "0"))
                     RemoveList.Add(i);
                 i++;
             }
@@ -1025,7 +1068,7 @@ namespace ExpertStats
                     {
                         FinishTimer.Enabled = false;
                         TaskFinished();
-                        FinishTimer.Dispose();
+                        //FinishTimer.Dispose();
                         GroupsEnable(true);
                     }
                     else
@@ -1066,7 +1109,6 @@ namespace ExpertStats
             StartFinishTask = selectedRow.Index;
             bAsyncDone = true;
             FinishTimer.Tag = "KUDO";
-            btnStop.Enabled = true;
             StartingTasks();
             FinishTimer.Enabled = true;
         }
@@ -1124,8 +1166,9 @@ namespace ExpertStats
             PlotScatter.Dispose();
         }
 
-        private void FetchAllPostsInfo()
+        private int FetchAllPostsInfo()
         {
+            int cnt = 0;
             foreach(cExpert ce in AuthorList)
             {
                 string filePath = WhereExpert + ce.user_id + "/AllPosts.txt";
@@ -1137,9 +1180,11 @@ namespace ExpertStats
                     ce.TotalSolutions = sS[1];
                     ce.Kudoed = sS[2];
                     ce.ktt_days = Convert.ToInt32(sS[3]);
+                    cnt++;
                 }
                 else ce.ktt_days = 0;
             }
+            return cnt;
         }
 
         private void btnHist_Click(object sender, EventArgs e)
@@ -1164,10 +1209,12 @@ namespace ExpertStats
                     selectedRow.Add((bool)row.Selected);
                 }
             }
-            FetchAllPostsInfo();
-            TPChart HistChart = new TPChart(selectedRow, tbYear.Text);
-            HistChart.ShowDialog();
-            HistChart.Dispose();
+            if(FetchAllPostsInfo() > 0)
+            {
+                TPChart HistChart = new TPChart(selectedRow, tbYear.Text);
+                HistChart.ShowDialog();
+                HistChart.Dispose();
+            }
         }
 
         private void btnDelExpert_Click(object sender, EventArgs e)
@@ -1201,7 +1248,6 @@ namespace ExpertStats
             DataGridViewRow selectedRow = dgvExpert.SelectedRows[0];
             StartFinishTask = selectedRow.Index;
             bAsyncDone = true;
-            DisableTasks();
             GroupsEnable(false);
             FinishTimer.Tag = "ALL";
             FinishTimer.Enabled = true;
@@ -1212,13 +1258,24 @@ namespace ExpertStats
         {
             bStillRunning = true;
             if (FinishTimer.Enabled) return;
-            DisableTasks();
+            GroupsEnable(false);
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            FinishTimer.Stop();
             FinishTimer.Enabled = false;
-            TaskFinished();
+            StopAsync = true;
+            pbAuthors.Value = 0;
+            TimerAcnt.Stop();
+            TimerAcnt.Enabled = false;
+            Application.DoEvents();
+            if (Counting_SK)
+            {
+                UpdateDGVlist();
+                dgvExpert.Invalidate(false);
+            }
+            GroupsEnable(true);
         }
 
         private void GroupsEnable(bool b)
@@ -1227,13 +1284,15 @@ namespace ExpertStats
             groupBox2.Enabled = b;
             groupBox3.Enabled = b;
             groupBox4.Enabled = b;
-            btnStop.Enabled =   b;
-            groupBox8.Enabled = b;
+            //btnStop.Enabled =   !b;
+            // the below does not work with windows timers, need the threading timer
+            // or system.timers.system 
+            //dgvExpert.Enabled = !b;
         }
         private void TaskFinished()
         {
             if (FinishTimer.Enabled) return;
-            bool b = false;
+            bool b = true;
             bStillRunning = false;
             groupBox1.Enabled = b;
             groupBox2.Enabled = b;
@@ -1241,13 +1300,59 @@ namespace ExpertStats
             groupBox4.Enabled = b;
         }
 
-        private void DisableTasks()
+        private void ExpertInfo_HelpButtonClicked(object sender, CancelEventArgs e)
         {
-            btnStop.Enabled = true;
-            groupBox1.Enabled = false;
-            groupBox2.Enabled = false;
-            groupBox3.Enabled = false;
-            groupBox4.Enabled = false;
+            help MainHelp = new help();
+            MainHelp.ShowDialog();
+            MainHelp.Dispose();
+        }
+
+        private void tbYear_TextChanged(object sender, EventArgs e)
+        {
+            if(iStartUp)
+            {
+                iStartUp = false;
+                return;
+            }
+            btnUseDate.Enabled = true;
+            lbRestart.Visible = true;
+        }
+
+        private void btnUseDate_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+            Application.Exit();
+        }
+
+        private void btnClearCts_Click(object sender, EventArgs e)
+        {
+            List<int> ClearedRows = new List<int>();
+            int i = 0;
+            if (dgvExpert.SelectedRows.Count == 0)
+            {
+                foreach(DataGridViewRow Row in dgvExpert.Rows)
+                {
+                    Row.Cells[3].Value = "-1";
+                    Row.Cells[5].Value = "-1";
+                    ClearedRows.Add(i);
+                }
+            }
+            else
+            {
+                foreach(DataGridViewRow Row in dgvExpert.SelectedRows)
+                {
+                    Row.Cells[3].Value = "-1";
+                    Row.Cells[5].Value = "-1";
+                    ClearedRows.Add(Row.Index);
+                }    
+                dgvExpert.ClearSelection();
+            }
+            foreach(int j in ClearedRows)
+            {
+                AuthorList[j].Spages = "-1";
+                AuthorList[j].Kpages = "-1";
+            }
+            UpdateDGVlist();
         }
     }
 }

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.lbWhereExe = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnClearCts = new System.Windows.Forms.Button();
             this.btnAutoPost = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btnFinishKudo = new System.Windows.Forms.Button();
@@ -47,6 +48,8 @@
             this.btnGetAllPosts = new System.Windows.Forms.Button();
             this.btnKudoRef = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lbRestart = new System.Windows.Forms.Label();
+            this.btnUseDate = new System.Windows.Forms.Button();
             this.tbCutTime = new System.Windows.Forms.TextBox();
             this.tbYear = new System.Windows.Forms.TextBox();
             this.pbGetSol = new System.Windows.Forms.ProgressBar();
@@ -90,6 +93,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnClearCts);
             this.groupBox3.Controls.Add(this.btnAutoPost);
             this.groupBox3.Controls.Add(this.groupBox7);
             this.groupBox3.Controls.Add(this.groupBox6);
@@ -104,6 +108,19 @@
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Diagnostics and Tools";
+            // 
+            // btnClearCts
+            // 
+            this.btnClearCts.ForeColor = System.Drawing.Color.Red;
+            this.btnClearCts.Location = new System.Drawing.Point(219, 266);
+            this.btnClearCts.Name = "btnClearCts";
+            this.btnClearCts.Size = new System.Drawing.Size(95, 23);
+            this.btnClearCts.TabIndex = 18;
+            this.btnClearCts.Text = "Clear Users";
+            this.toolTip1.SetToolTip(this.btnClearCts, "Sets either all user solutiions\r\n to -1 or just the selected users\r\nNo users are " +
+        "removed and you\r\nmust run the COUNT tools");
+            this.btnClearCts.UseVisualStyleBackColor = true;
+            this.btnClearCts.Click += new System.EventHandler(this.btnClearCts_Click);
             // 
             // btnAutoPost
             // 
@@ -183,7 +200,7 @@
             // btnDelExpert
             // 
             this.btnDelExpert.ForeColor = System.Drawing.Color.Red;
-            this.btnDelExpert.Location = new System.Drawing.Point(196, 364);
+            this.btnDelExpert.Location = new System.Drawing.Point(219, 331);
             this.btnDelExpert.Name = "btnDelExpert";
             this.btnDelExpert.Size = new System.Drawing.Size(95, 23);
             this.btnDelExpert.TabIndex = 14;
@@ -216,7 +233,7 @@
             // btnDelBlanks
             // 
             this.btnDelBlanks.ForeColor = System.Drawing.Color.Red;
-            this.btnDelBlanks.Location = new System.Drawing.Point(196, 335);
+            this.btnDelBlanks.Location = new System.Drawing.Point(219, 302);
             this.btnDelBlanks.Name = "btnDelBlanks";
             this.btnDelBlanks.Size = new System.Drawing.Size(95, 23);
             this.btnDelBlanks.TabIndex = 5;
@@ -227,11 +244,13 @@
             // btnDelContacts
             // 
             this.btnDelContacts.ForeColor = System.Drawing.Color.Red;
-            this.btnDelContacts.Location = new System.Drawing.Point(196, 306);
+            this.btnDelContacts.Location = new System.Drawing.Point(219, 232);
             this.btnDelContacts.Name = "btnDelContacts";
             this.btnDelContacts.Size = new System.Drawing.Size(95, 23);
             this.btnDelContacts.TabIndex = 4;
-            this.btnDelContacts.Text = "Delete Contacts";
+            this.btnDelContacts.Text = "Delete Users";
+            this.toolTip1.SetToolTip(this.btnDelContacts, "Deletes the contact file it will be\r\nrebuilt when the program restarts\r\nYou must " +
+        "run the count tools and\r\ndecide which users to delete");
             this.btnDelContacts.UseVisualStyleBackColor = true;
             this.btnDelContacts.Click += new System.EventHandler(this.btnDelContacts_Click);
             // 
@@ -273,6 +292,8 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.lbRestart);
+            this.groupBox5.Controls.Add(this.btnUseDate);
             this.groupBox5.Controls.Add(this.tbCutTime);
             this.groupBox5.Controls.Add(this.tbYear);
             this.groupBox5.Location = new System.Drawing.Point(20, 147);
@@ -280,25 +301,49 @@
             this.groupBox5.Size = new System.Drawing.Size(156, 118);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Start Date Time";
+            this.groupBox5.Text = "Start Date";
+            // 
+            // lbRestart
+            // 
+            this.lbRestart.AutoSize = true;
+            this.lbRestart.ForeColor = System.Drawing.Color.Red;
+            this.lbRestart.Location = new System.Drawing.Point(10, 82);
+            this.lbRestart.Name = "lbRestart";
+            this.lbRestart.Size = new System.Drawing.Size(82, 13);
+            this.lbRestart.TabIndex = 3;
+            this.lbRestart.Text = "Program will exit";
+            this.lbRestart.Visible = false;
+            // 
+            // btnUseDate
+            // 
+            this.btnUseDate.Enabled = false;
+            this.btnUseDate.Location = new System.Drawing.Point(9, 47);
+            this.btnUseDate.Name = "btnUseDate";
+            this.btnUseDate.Size = new System.Drawing.Size(101, 23);
+            this.btnUseDate.TabIndex = 2;
+            this.btnUseDate.Text = "Use This Date";
+            this.toolTip1.SetToolTip(this.btnUseDate, "Program will exit");
+            this.btnUseDate.UseVisualStyleBackColor = true;
+            this.btnUseDate.Click += new System.EventHandler(this.btnUseDate_Click);
             // 
             // tbCutTime
             // 
-            this.tbCutTime.Location = new System.Drawing.Point(19, 71);
+            this.tbCutTime.Location = new System.Drawing.Point(6, 92);
             this.tbCutTime.Name = "tbCutTime";
             this.tbCutTime.ReadOnly = true;
-            this.tbCutTime.Size = new System.Drawing.Size(100, 20);
+            this.tbCutTime.Size = new System.Drawing.Size(65, 20);
             this.tbCutTime.TabIndex = 1;
             this.tbCutTime.Text = "12:00 AM";
+            this.tbCutTime.Visible = false;
             // 
             // tbYear
             // 
-            this.tbYear.Location = new System.Drawing.Point(19, 28);
+            this.tbYear.Location = new System.Drawing.Point(8, 19);
             this.tbYear.Name = "tbYear";
-            this.tbYear.ReadOnly = true;
-            this.tbYear.Size = new System.Drawing.Size(100, 20);
+            this.tbYear.Size = new System.Drawing.Size(76, 20);
             this.tbYear.TabIndex = 0;
             this.tbYear.Text = "01-01-2024";
+            this.tbYear.TextChanged += new System.EventHandler(this.tbYear_TextChanged);
             // 
             // pbGetSol
             // 
@@ -384,12 +429,14 @@
             // 
             // MakeKUtbl
             // 
+            this.MakeKUtbl.Enabled = false;
             this.MakeKUtbl.Location = new System.Drawing.Point(9, 35);
             this.MakeKUtbl.Name = "MakeKUtbl";
             this.MakeKUtbl.Size = new System.Drawing.Size(111, 23);
             this.MakeKUtbl.TabIndex = 3;
             this.MakeKUtbl.Text = "Make Kudo Lookup";
             this.MakeKUtbl.UseVisualStyleBackColor = true;
+            this.MakeKUtbl.Click += new System.EventHandler(this.MakeKUtbl_Click);
             // 
             // pbAuthors
             // 
@@ -405,6 +452,7 @@
             this.btnCountKudos.Size = new System.Drawing.Size(95, 23);
             this.btnCountKudos.TabIndex = 1;
             this.btnCountKudos.Text = "Count Kudos";
+            this.toolTip1.SetToolTip(this.btnCountKudos, "this only counts kudo pages");
             this.btnCountKudos.UseVisualStyleBackColor = true;
             this.btnCountKudos.Click += new System.EventHandler(this.btnCountKudos_Click);
             // 
@@ -415,6 +463,7 @@
             this.btnCount.Size = new System.Drawing.Size(95, 23);
             this.btnCount.TabIndex = 0;
             this.btnCount.Text = "Count Solutions";
+            this.toolTip1.SetToolTip(this.btnCount, "Just gets number pages");
             this.btnCount.UseVisualStyleBackColor = true;
             this.btnCount.Click += new System.EventHandler(this.btnCount_Click);
             // 
@@ -444,7 +493,6 @@
             // 
             // btnStop
             // 
-            this.btnStop.Enabled = false;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStop.ForeColor = System.Drawing.Color.Red;
             this.btnStop.Location = new System.Drawing.Point(1232, 35);
@@ -492,8 +540,12 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dgvExpert);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.HelpButton = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ExpertInfo";
-            this.Text = "ExpertStats1";
+            this.Text = "ExpertStats";
+            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ExpertInfo_HelpButtonClicked);
             this.groupBox3.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
@@ -553,5 +605,8 @@
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Label lbCurrentVol;
         private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Button btnUseDate;
+        private System.Windows.Forms.Label lbRestart;
+        private System.Windows.Forms.Button btnClearCts;
     }
 }
