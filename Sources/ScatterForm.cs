@@ -22,6 +22,7 @@ using ChartValueType = System.Windows.Forms.DataVisualization.Charting.ChartValu
 using ElementPosition = System.Windows.Forms.DataVisualization.Charting.ElementPosition;
 using Series = System.Windows.Forms.DataVisualization.Charting.Series;
 using TextAnnotation = System.Windows.Forms.DataVisualization.Charting.TextAnnotation;
+using Legend = System.Windows.Forms.DataVisualization.Charting.Legend;
 
 namespace ExpertStats
 {
@@ -34,7 +35,7 @@ namespace ExpertStats
         private DateTime Cutoff;
         private int nMaxCnt=0;
         private int PlotType;
-        public ScatterForm( ref List<bool> rselectedRow, DateTime rCutoff)
+        public ScatterForm( List<bool> rselectedRow, DateTime rCutoff)
         {
             InitializeComponent();
             int DayWorked = 0;
@@ -47,6 +48,8 @@ namespace ExpertStats
                 if (wi.Show) NumCheckedMacros++;
                 wi.name = AuthorList[i].name;
                 wi.Solutions = ReadDTLFromSOL(AuthorList[i].user_id, ref DayWorked);
+                if (wi.Solutions == null)
+                    wi.Solutions = new List<DateTime>();
                 wi.DaysWorked = DayWorked;
                 wi.bEmpty = wi.Solutions.Count == 0;
                 workList.Add(wi);
@@ -93,12 +96,14 @@ namespace ExpertStats
 
         private void ShowInitial()
         {
-            ChartArea chartArea = new ChartArea();
+            ChartArea chartArea = new ChartArea();            
             List<int>WhereUsed = new List<int>();
             PlotType = 0;
             chart1.ChartAreas.Add(chartArea);
             if (NumCheckedMacros == 0) return;
             DateTime today = DateTime.Today;
+            Legend legend = new Legend();
+            chart1.Legends.Add(legend);
             chart1.Legends[0].Title = "Solutions shown in ()";
             chart1.ChartAreas[0].AxisY.IsReversed = false;
             chart1.ChartAreas[0].AxisY.Minimum = 0;

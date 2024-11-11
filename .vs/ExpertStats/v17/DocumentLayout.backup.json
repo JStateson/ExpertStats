@@ -3,48 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\josep\\source\\repos\\ExpertStats\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|c:\\users\\josep\\source\\repos\\expertstats\\sources\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|c:\\users\\josep\\source\\repos\\expertstats\\sources\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|ExpertStats||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|c:\\users\\josep\\source\\repos\\expertstats\\sources\\tpchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\tpchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\AppData\\Local\\Temp\\.vsdbgsrc\\dc9475d940082ab7ed1203ddc3730c8493d960267c2243de04f94d74477953df\\Convert.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\global.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\global.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\tpchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\tpchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\webform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\webform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\webform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\webform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\scatterform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\scatterform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\scatterform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\scatterform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\AppData\\Local\\Temp\\.vsdbgsrc\\8caa55885db827e4d60f3d5c73afc8fffa843cc71a5a1ef73ed88dc8694fb812\\ThrowHelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\source\\repos\\ExpertStats\\tpchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tpchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\source\\repos\\ExpertStats\\ScatterForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ScatterForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\source\\repos\\ExpertStats\\expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:expertstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ExpertStats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\josep\\source\\repos\\ExpertStats\\global.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:global.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|c:\\users\\josep\\source\\repos\\expertstats\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
+      "AbsoluteMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|C:\\Users\\josep\\source\\repos\\ExpertStats\\sources\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09F98AEF-ED3C-4190-9C88-C40FEE019F6C}|ExpertStats.csproj|solutionrelative:sources\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,15 +62,86 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "WebForm.cs",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\WebForm.cs",
+              "RelativeDocumentMoniker": "Sources\\WebForm.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\WebForm.cs",
+              "RelativeToolTip": "Sources\\WebForm.cs",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAhwJkAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-10T20:03:00.802Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "WebForm.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\WebForm.cs",
+              "RelativeDocumentMoniker": "Sources\\WebForm.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\WebForm.cs [Design]",
+              "RelativeToolTip": "Sources\\WebForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-10T20:02:58.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TPChart.cs",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\TPChart.cs",
+              "RelativeDocumentMoniker": "Sources\\TPChart.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\TPChart.cs",
+              "RelativeToolTip": "Sources\\TPChart.cs",
+              "ViewState": "AgIAALwAAAAAAAAAAAAuwMIAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-10T16:14:27.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ScatterForm.cs",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ScatterForm.cs",
+              "RelativeDocumentMoniker": "Sources\\ScatterForm.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ScatterForm.cs",
+              "RelativeToolTip": "Sources\\ScatterForm.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAuwIQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-10T16:22:27.348Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ScatterForm.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ScatterForm.cs",
+              "RelativeDocumentMoniker": "Sources\\ScatterForm.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ScatterForm.cs [Design]",
+              "RelativeToolTip": "Sources\\ScatterForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-10T16:22:24.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "global.cs",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\global.cs",
+              "RelativeDocumentMoniker": "Sources\\global.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\global.cs",
+              "RelativeToolTip": "Sources\\global.cs",
+              "ViewState": "AgIAAI4CAAAAAAAAAAAtwJ4CAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-10T15:01:32.971Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ExpertStats.cs",
               "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ExpertStats.cs",
               "RelativeDocumentMoniker": "Sources\\ExpertStats.cs",
               "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ExpertStats.cs*",
               "RelativeToolTip": "Sources\\ExpertStats.cs*",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABcAAABIAAAAAAAAAA==",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAuwGMAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-09T15:52:35.719Z",
+              "WhenOpened": "2024-11-10T08:29:42.809Z",
               "EditorCaption": ""
             },
             {
@@ -86,114 +153,31 @@
               "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ExpertStats.cs [Design]*",
               "RelativeToolTip": "Sources\\ExpertStats.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-09T15:52:32.918Z",
+              "WhenOpened": "2024-11-10T08:29:38.792Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ExpertStats",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.csproj",
-              "RelativeDocumentMoniker": "ExpertStats.csproj",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.csproj*",
-              "RelativeToolTip": "ExpertStats.csproj*",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-09T15:51:49.166Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Convert.cs",
-              "DocumentMoniker": "C:\\Users\\josep\\AppData\\Local\\Temp\\.vsdbgsrc\\dc9475d940082ab7ed1203ddc3730c8493d960267c2243de04f94d74477953df\\Convert.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\dc9475d940082ab7ed1203ddc3730c8493d960267c2243de04f94d74477953df\\Convert.cs",
-              "ToolTip": "C:\\Users\\josep\\AppData\\Local\\Temp\\.vsdbgsrc\\dc9475d940082ab7ed1203ddc3730c8493d960267c2243de04f94d74477953df\\Convert.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\dc9475d940082ab7ed1203ddc3730c8493d960267c2243de04f94d74477953df\\Convert.cs",
-              "ViewState": "AgIAAEYIAAAAAAAAAAAYwFAIAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-09T12:06:59.023Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ScatterForm.cs",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ScatterForm.cs",
-              "RelativeDocumentMoniker": "ScatterForm.cs",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ScatterForm.cs",
-              "RelativeToolTip": "ScatterForm.cs",
-              "ViewState": "AgIAAN8AAAAAAAAAAADwv+cAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-07T16:15:31.067Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ThrowHelper.cs",
-              "DocumentMoniker": "C:\\Users\\josep\\AppData\\Local\\Temp\\.vsdbgsrc\\8caa55885db827e4d60f3d5c73afc8fffa843cc71a5a1ef73ed88dc8694fb812\\ThrowHelper.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\8caa55885db827e4d60f3d5c73afc8fffa843cc71a5a1ef73ed88dc8694fb812\\ThrowHelper.cs",
-              "ToolTip": "C:\\Users\\josep\\AppData\\Local\\Temp\\.vsdbgsrc\\8caa55885db827e4d60f3d5c73afc8fffa843cc71a5a1ef73ed88dc8694fb812\\ThrowHelper.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\8caa55885db827e4d60f3d5c73afc8fffa843cc71a5a1ef73ed88dc8694fb812\\ThrowHelper.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAiwDsAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-09T11:27:51.244Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "ExpertStats.cs",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.cs",
-              "RelativeDocumentMoniker": "ExpertStats.cs",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.cs",
-              "RelativeToolTip": "ExpertStats.cs",
-              "ViewState": "AgIAALwDAAAAAAAAAAD4v8QDAAANAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\Program.cs",
+              "RelativeDocumentMoniker": "Sources\\Program.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\Program.cs",
+              "RelativeToolTip": "Sources\\Program.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAA1wBIAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-07T01:19:17.652Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "global.cs",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\global.cs",
-              "RelativeDocumentMoniker": "global.cs",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\global.cs",
-              "RelativeToolTip": "global.cs",
-              "ViewState": "AgIAABgCAAAAAAAAAAAtwB0CAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-02T03:59:27.871Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "TPChart.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\TPChart.cs",
-              "RelativeDocumentMoniker": "TPChart.cs",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\TPChart.cs [Design]",
-              "RelativeToolTip": "TPChart.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T19:51:48.974Z"
+              "WhenOpened": "2024-11-10T08:29:20.352Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "ScatterForm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ScatterForm.cs",
-              "RelativeDocumentMoniker": "Sources\\ScatterForm.cs",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\ScatterForm.cs [Design]",
-              "RelativeToolTip": "Sources\\ScatterForm.cs [Design]",
+              "Title": "TPChart.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\TPChart.cs",
+              "RelativeDocumentMoniker": "Sources\\TPChart.cs",
+              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\Sources\\TPChart.cs [Design]",
+              "RelativeToolTip": "Sources\\TPChart.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-07T19:14:45.608Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ExpertStats.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.cs",
-              "RelativeDocumentMoniker": "ExpertStats.cs",
-              "ToolTip": "C:\\Users\\josep\\source\\repos\\ExpertStats\\ExpertStats.cs [Design]",
-              "RelativeToolTip": "ExpertStats.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-03T04:50:56.54Z"
+              "WhenOpened": "2024-11-10T08:24:50.156Z"
             }
           ]
         },

@@ -38,6 +38,7 @@ namespace ExpertStats
         public static string apPageCountS = "<div class='MessageSubjectIcons '>";
         public static string apBaseLookup = "user/viewprofilepage/user-id/";
         public static string hpBase = "https://h30434.www3.hp.com/t5/";
+        
 
         //https://h30434.www3.hp.com/t5/user/viewprofilepage/user-id/178540/page/1
 
@@ -347,10 +348,11 @@ namespace ExpertStats
             private string kT0 = "<span class=\"local-time\">";
             private string kT0e = "</span>";
 
-            private bool bNewPage;
             private DateTime RecentInPage;  // most recent in a page as the date of an older is not updated
             // this is a kluge but it would be unusual for 12 old kudos to be recenty updated all sequentially
-
+            private int NumberMostRecent; // if get to 12 then must be old page
+            private DateTime dtTemp = DateTime.Now;
+            private static DateTime EventStart = DateTime.Now;
             public bool FindKudo(string sKudo1, ref string KudoLoc)
             {
                 string sKudo = "https://h30434.www3.hp.com/t5/" + sKudo1;
@@ -397,17 +399,17 @@ namespace ExpertStats
             {
                 int iStart = 0;
                 BusyPage++;
-                bNewPage = true;
+                NumberMostRecent = 0;
                 int RtnCod = ExtractKP(ref aPage, iStart);
+
                 if (RtnCod == -1)
                 {
                     Busy = false;
-                    return -1;
                 }
-                if (Cutoff > RecentInPage)
+                else if (Cutoff > RecentInPage && NumberMostRecent > 10)
                 {
                     Busy = false;
-                    return 1;
+                    RtnCod = 1;
                 }
                 return RtnCod;
             }
@@ -464,12 +466,10 @@ namespace ExpertStats
                 j = s.IndexOf(kT0e, iS);
                 if(j< 0) return -1;
                 string sT = s.Substring(iS, j - iS);
-
                 string dtString = sD.Trim() + " " + sT.Trim();
-
                 iS = j + kT0e.Length;
 
-                DateTime dateTime = DateTime.Now;
+                DateTime dateTime = dtTemp;
                 b = dtHPtime(dtString, ref dateTime);
                 if (!b) return -1;
 
@@ -479,15 +479,11 @@ namespace ExpertStats
                 ck.Pid = sC[0].Trim();
                 ck.Kid = sC[1].Trim();
                 ck.sUrl = sUrl + ck.Kid;
-                if(bNewPage)
+
+                if (dateTime < Cutoff )
                 {
-                    RecentInPage = dateTime;
-                    bNewPage = false;
-                }
-                else
-                {
-                    if (dateTime > RecentInPage)
-                        RecentInPage = dateTime;
+                    NumberMostRecent++;
+                    if (NumberMostRecent > 10) return 1;
                 }
                 nKudosTotal += nN;
                 kitems.Add(ck);
@@ -552,6 +548,7 @@ namespace ExpertStats
             public int DaysWorked;
             public string user_id;
             public bool bEmpty;
+            public int WhereUsed; // index into the selected row array
             public List<DateTime> Solutions = new List<DateTime>();
         }
 
@@ -671,6 +668,7 @@ namespace ExpertStats
             public int Solved;
             public int days;
             public double m;
+            public string name;
         }
 
         public class cAllPostInfo
@@ -749,14 +747,16 @@ namespace ExpertStats
             {
                 int i, j;
                 bool bUseQ = true;
-                int n = 20; // per page
+                int nExpect = 20; // per page
+                int n = 0;
                 int NumCutBelow=0;
                 List<int>StartMessage = new List<int>();
                 StartMessage = FindOccurrences(ref aPage, apStartMessage);
                 // there are 40 of each but only 20 unique
                 List<int> localdate = FindOccurrences(ref aPage, bUseQ ? s1s : s1S);
                 List<int> localtime = FindOccurrences(ref aPage, bUseQ ? s2s : s2S);
-
+                n = localdate.Count / 2;
+                if (n != nExpect) return 1;
                 for(i = 0; i < n; i++)
                 {
                     j = aPage.IndexOf(s1e, localdate[i]);

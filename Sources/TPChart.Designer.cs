@@ -38,8 +38,8 @@
             this.btnDrawSel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.rbKudos = new System.Windows.Forms.RadioButton();
             this.rbAll = new System.Windows.Forms.RadioButton();
+            this.rbKudos = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCSel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -78,7 +78,7 @@
             // 
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(18, 15);
+            this.chart1.Location = new System.Drawing.Point(0, 50);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(922, 600);
             this.chart1.TabIndex = 20;
@@ -87,13 +87,12 @@
             // cboxUseLog
             // 
             this.cboxUseLog.AutoSize = true;
-            this.cboxUseLog.Location = new System.Drawing.Point(12, 32);
+            this.cboxUseLog.Location = new System.Drawing.Point(10, 32);
             this.cboxUseLog.Name = "cboxUseLog";
             this.cboxUseLog.Size = new System.Drawing.Size(108, 17);
             this.cboxUseLog.TabIndex = 25;
             this.cboxUseLog.Text = "Make Y log scale";
             this.cboxUseLog.UseVisualStyleBackColor = true;
-            this.cboxUseLog.Visible = false;
             // 
             // btnClearAll
             // 
@@ -145,26 +144,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
             // 
+            // rbAll
+            // 
+            this.rbAll.AutoSize = true;
+            this.rbAll.Checked = true;
+            this.rbAll.Location = new System.Drawing.Point(20, 76);
+            this.rbAll.Name = "rbAll";
+            this.rbAll.Size = new System.Drawing.Size(68, 17);
+            this.rbAll.TabIndex = 1;
+            this.rbAll.TabStop = true;
+            this.rbAll.Text = "All  Posts";
+            this.rbAll.UseVisualStyleBackColor = true;
+            // 
             // rbKudos
             // 
             this.rbKudos.AutoSize = true;
-            this.rbKudos.Checked = true;
             this.rbKudos.Location = new System.Drawing.Point(20, 42);
             this.rbKudos.Name = "rbKudos";
             this.rbKudos.Size = new System.Drawing.Size(55, 17);
             this.rbKudos.TabIndex = 0;
             this.rbKudos.Text = "Kudos";
             this.rbKudos.UseVisualStyleBackColor = true;
-            // 
-            // rbAll
-            // 
-            this.rbAll.AutoSize = true;
-            this.rbAll.Location = new System.Drawing.Point(20, 76);
-            this.rbAll.Name = "rbAll";
-            this.rbAll.Size = new System.Drawing.Size(68, 17);
-            this.rbAll.TabIndex = 1;
-            this.rbAll.Text = "All  Posts";
-            this.rbAll.UseVisualStyleBackColor = true;
             // 
             // TPChart
             // 

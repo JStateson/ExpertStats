@@ -25,6 +25,7 @@ namespace ExpertStats
     public partial class TPChart : Form
     {
         private int PlotType = 0;
+        private int LastPlotType = -1;
 
         private List<bool> selectedRow;
         private int iBinCnt = 7;// one week = 7 da
@@ -37,7 +38,7 @@ namespace ExpertStats
         private DateTime Cutoff;
         private string dt_first;
         private List<cEachUserVal> UserPosts = new List<cEachUserVal>();
-        public TPChart( ref List<bool> rselectedRow, string rCutoff)
+        public TPChart(List<bool> rselectedRow, string rCutoff)
         {
             InitializeComponent();
             int i = 0;
@@ -52,11 +53,13 @@ namespace ExpertStats
                 PeerIDs.Add(ce.user_id);
                 cWorkInfo wi = new cWorkInfo();
                 wi.Show = rselectedRow[i];
+                wi.WhereUsed = i;
                 if (wi.Show) NumCheckedMacros++;
                 wi.name = ce.name;
                 workList.Add(wi);
                 cEachUserVal eu = new cEachUserVal();
                 int j = Convert.ToInt32(ce.TotalPosts);
+                eu.name = ce.name;
                 if (ce.ktt_days == 0 || j == 0)
                 {
                     selectedRow[i] = false;
@@ -96,6 +99,8 @@ namespace ExpertStats
             dgvCSel.Columns[0].Width = 32;
             MyBindingSource.ResetBindings(false);
             ChartAll();
+            //SortDGV();
+            LastPlotType = PlotType;
         }
 
         private int Scale100(int n, int m)
@@ -117,6 +122,8 @@ namespace ExpertStats
             int[] barUser = new int[n];
             int[] barPeer = new int[n];
             int[] barExpe = new int[n];
+            int[] Unsorted = new int[n];
+            int[] SortInx = Enumerable.Range(0, n).ToArray();
             string[] xAx = new string[n];
             nMaxValue = 0;
             n = 0;
@@ -133,6 +140,7 @@ namespace ExpertStats
                             b = false;
                             selectedRow[j] = b;
                             NumCheckedMacros--;
+                            j++;
                             continue;
                         }
                         WhereSelected.Add(q);
@@ -140,7 +148,9 @@ namespace ExpertStats
                         barUser[i] = eu.Solved;
                         barPeer[i] = eu.Kudoed;
                         barExpe[i] = eu.Unsolved;
-                        nMaxValue = Math.Max(nMaxValue, eu.Solved + eu.Kudoed + eu.Unsolved);
+                        int t = eu.Solved + eu.Kudoed + eu.Unsolved;
+                        Unsorted[i] = t;
+                        nMaxValue = Math.Max(nMaxValue, t);
                     }
                     if(rbKudos.Checked)
                     {
@@ -148,6 +158,8 @@ namespace ExpertStats
                         n++;
                         barUser[i] = KudoRcvd.TotalWeight[j];
                         barPeer[i] = KudoRcvd.ExpertWeight[j];
+                        int t = barUser[i] + barPeer[i];
+                        Unsorted[i] = t;
                         nMaxValue = Math.Max(nMaxValue, barUser[i] + barPeer[i]);
                     }
                     xAx[i] = AuthorList[j].name;
@@ -155,8 +167,9 @@ namespace ExpertStats
                 }
                 j++;
             }
-
-            if(rbAll.Checked) // rescale to 100
+            Array.Sort(Unsorted,SortInx);
+            Array.Reverse(SortInx);
+            if (rbAll.Checked) // rescale to 100
             {
                 
                 for(j = 0; j < i; j++)
@@ -187,7 +200,8 @@ namespace ExpertStats
             chart1.Width = 800;
             if (NumCheckedMacros > 25)
             {
-                chart1.Width = 32 * NumCheckedMacros;
+                int c = 32; // was 32
+                chart1.Width = c * NumCheckedMacros;
             }
 
 
@@ -208,15 +222,16 @@ namespace ExpertStats
                 // Add points for each bar in this segment
                 for (j = 0; j < n; j++)
                 {
+                    int jS = SortInx[j];
                     if(rbKudos.Checked)
-                        value = (i == 0) ? barUser[j] : barPeer[j];
+                        value = (i == 0) ? barUser[jS] : barPeer[jS];
                     if(rbAll.Checked)
                     {
-                        if (i == 0) value = barUser[j];
-                        if (i == 1) value = barPeer[j];
-                        if (i == 2) value = barExpe[j];
+                        if (i == 0) value = barUser[jS];
+                        if (i == 1) value = barPeer[jS];
+                        if (i == 2) value = barExpe[jS];
                     }
-                    series.Points.AddXY(xAx[j], value);
+                    series.Points.AddXY(xAx[jS], value);
                 }
                 chart1.Series.Add(series);
                 chart1.Series[i]["PointWidth"] = "0.2";
@@ -330,17 +345,52 @@ namespace ExpertStats
         private void btnDrawSel_Click(object sender, EventArgs e)
         {
             bool isChecked;
+            if (rbAll.Checked) PlotType = 1;
+            else PlotType = 0;
             NumCheckedMacros = 0;
             for (int i = 0; i < dgvCSel.Rows.Count; i++)
             {
-                isChecked = (bool)dgvCSel.Rows[i].Cells[0].Value;
-                workList[i].Show = isChecked;
-                selectedRow[i] = isChecked;
+                int j = workList[i].WhereUsed;
+                isChecked = (bool)dgvCSel.Rows[j].Cells[0].Value;
+                workList[j].Show = isChecked;
+                selectedRow[j] = isChecked;
                 NumCheckedMacros += isChecked ? 1 : 0;
             }
             ClearChart();
             ChartAll();
+            //SortDGV();
         }
+
+        private void SortDGV()
+        {
+
+            if (LastPlotType == PlotType) return;
+            int n = dgvCSel.Rows.Count;
+            List<cWorkInfo> wl = new List<cWorkInfo>();
+            foreach(cWorkInfo wi in workList)
+            {
+                wl.Add(wi);
+            }
+            int[] Unsorted = new int[n];
+            int[] SortInx = new int[n];
+            for(int i = 0;i < n;i++)
+            {
+                SortInx[i] = i;
+                string s = dgvCSel.Rows[i].Cells[2].Value.ToString();
+                if (s == "") s = "0";
+                Unsorted[i] = Convert.ToInt32(s);
+            }
+            Array.Sort(Unsorted, SortInx);
+            Array.Reverse(SortInx);
+            int j = 0;
+            foreach(int i in SortInx)
+            {
+                workList[j] = wl[i];
+                j++;
+            }
+            dgvCSel.Invalidate(false);
+        }
+
 
         private void ClearChart()
         {

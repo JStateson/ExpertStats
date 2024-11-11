@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.dgvCSel = new System.Windows.Forms.DataGridView();
             this.btnDrawSel = new System.Windows.Forms.Button();
@@ -48,13 +46,8 @@
             // 
             // chart1
             // 
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(15, 12);
             this.chart1.Name = "chart1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(850, 588);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -71,7 +64,7 @@
             this.dgvCSel.RowHeadersVisible = false;
             this.dgvCSel.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvCSel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCSel.Size = new System.Drawing.Size(155, 527);
+            this.dgvCSel.Size = new System.Drawing.Size(243, 527);
             this.dgvCSel.TabIndex = 1;
             this.dgvCSel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvCSel_KeyDown);
             // 
@@ -164,7 +157,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1288, 642);
+            this.ClientSize = new System.Drawing.Size(1390, 642);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnClearAll);
@@ -172,6 +165,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDrawSel);
             this.Controls.Add(this.dgvCSel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "ScatterForm";
             this.Text = "Work schedule and Kudo graphs";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();

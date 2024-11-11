@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.lbWhereExe = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnAutoPost = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btnFinishKudo = new System.Windows.Forms.Button();
             this.cbKudoCalculate = new System.Windows.Forms.CheckBox();
@@ -44,7 +45,6 @@
             this.btnDelContacts = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnGetAllPosts = new System.Windows.Forms.Button();
-            this.lbCnt = new System.Windows.Forms.Label();
             this.btnKudoRef = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tbCutTime = new System.Windows.Forms.TextBox();
@@ -52,6 +52,7 @@
             this.pbGetSol = new System.Windows.Forms.ProgressBar();
             this.btnGetKudo = new System.Windows.Forms.Button();
             this.btnGetSol = new System.Windows.Forms.Button();
+            this.lbCnt = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnHist = new System.Windows.Forms.Button();
             this.btnScatPlot = new System.Windows.Forms.Button();
@@ -64,7 +65,9 @@
             this.TimerAcnt = new System.Windows.Forms.Timer(this.components);
             this.FinishTimer = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btnAutoPost = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.lbCurrentVol = new System.Windows.Forms.Label();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.groupBox3.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -73,6 +76,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExpert)).BeginInit();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbWhereExe
@@ -96,10 +100,21 @@
             this.groupBox3.Controls.Add(this.btnDelContacts);
             this.groupBox3.Location = new System.Drawing.Point(993, 268);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(338, 412);
+            this.groupBox3.Size = new System.Drawing.Size(376, 412);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Diagnostics and Tools";
+            // 
+            // btnAutoPost
+            // 
+            this.btnAutoPost.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.btnAutoPost.Location = new System.Drawing.Point(26, 290);
+            this.btnAutoPost.Name = "btnAutoPost";
+            this.btnAutoPost.Size = new System.Drawing.Size(113, 41);
+            this.btnAutoPost.TabIndex = 17;
+            this.btnAutoPost.Text = "Automate All Posts\r\nStats from selected ";
+            this.btnAutoPost.UseVisualStyleBackColor = true;
+            this.btnAutoPost.Click += new System.EventHandler(this.btnAutoPost_Click);
             // 
             // groupBox7
             // 
@@ -223,7 +238,6 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnGetAllPosts);
-            this.groupBox2.Controls.Add(this.lbCnt);
             this.groupBox2.Controls.Add(this.btnKudoRef);
             this.groupBox2.Controls.Add(this.groupBox5);
             this.groupBox2.Controls.Add(this.pbGetSol);
@@ -246,15 +260,6 @@
             this.btnGetAllPosts.Text = "Get All Posts";
             this.btnGetAllPosts.UseVisualStyleBackColor = true;
             this.btnGetAllPosts.Click += new System.EventHandler(this.btnGetAllPosts_Click);
-            // 
-            // lbCnt
-            // 
-            this.lbCnt.AutoSize = true;
-            this.lbCnt.Location = new System.Drawing.Point(141, 60);
-            this.lbCnt.Name = "lbCnt";
-            this.lbCnt.Size = new System.Drawing.Size(29, 13);
-            this.lbCnt.TabIndex = 8;
-            this.lbCnt.Text = "#cnt";
             // 
             // btnKudoRef
             // 
@@ -322,13 +327,24 @@
             this.btnGetSol.UseVisualStyleBackColor = true;
             this.btnGetSol.Click += new System.EventHandler(this.btnGetSol_Click);
             // 
+            // lbCnt
+            // 
+            this.lbCnt.AutoSize = true;
+            this.lbCnt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCnt.ForeColor = System.Drawing.Color.Red;
+            this.lbCnt.Location = new System.Drawing.Point(6, 43);
+            this.lbCnt.Name = "lbCnt";
+            this.lbCnt.Size = new System.Drawing.Size(31, 16);
+            this.lbCnt.TabIndex = 8;
+            this.lbCnt.Text = "#cnt";
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.btnHist);
             this.groupBox4.Controls.Add(this.btnScatPlot);
             this.groupBox4.Location = new System.Drawing.Point(993, 35);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(222, 167);
+            this.groupBox4.Size = new System.Drawing.Size(175, 149);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Solution Graphs";
@@ -426,22 +442,49 @@
             this.FinishTimer.Interval = 5000;
             this.FinishTimer.Tick += new System.EventHandler(this.FinishTimer_Tick);
             // 
-            // btnAutoPost
+            // btnStop
             // 
-            this.btnAutoPost.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.btnAutoPost.Location = new System.Drawing.Point(26, 290);
-            this.btnAutoPost.Name = "btnAutoPost";
-            this.btnAutoPost.Size = new System.Drawing.Size(113, 41);
-            this.btnAutoPost.TabIndex = 17;
-            this.btnAutoPost.Text = "Automate All Posts\r\nStats from selected ";
-            this.btnAutoPost.UseVisualStyleBackColor = true;
-            this.btnAutoPost.Click += new System.EventHandler(this.btnAutoPost_Click);
+            this.btnStop.Enabled = false;
+            this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStop.ForeColor = System.Drawing.Color.Red;
+            this.btnStop.Location = new System.Drawing.Point(1232, 35);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 44);
+            this.btnStop.TabIndex = 10;
+            this.btnStop.Text = "STOP";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.UseWaitCursor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // lbCurrentVol
+            // 
+            this.lbCurrentVol.AutoSize = true;
+            this.lbCurrentVol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCurrentVol.ForeColor = System.Drawing.Color.Red;
+            this.lbCurrentVol.Location = new System.Drawing.Point(6, 20);
+            this.lbCurrentVol.Name = "lbCurrentVol";
+            this.lbCurrentVol.Size = new System.Drawing.Size(44, 16);
+            this.lbCurrentVol.TabIndex = 11;
+            this.lbCurrentVol.Text = "Name";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.lbCurrentVol);
+            this.groupBox8.Controls.Add(this.lbCnt);
+            this.groupBox8.Location = new System.Drawing.Point(1189, 105);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(180, 79);
+            this.groupBox8.TabIndex = 11;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Tasking Info";
             // 
             // ExpertInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1356, 725);
+            this.ClientSize = new System.Drawing.Size(1392, 725);
+            this.Controls.Add(this.groupBox8);
+            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lbWhereExe);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -457,12 +500,13 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvExpert)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -506,5 +550,8 @@
         private System.Windows.Forms.Timer FinishTimer;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnAutoPost;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Label lbCurrentVol;
+        private System.Windows.Forms.GroupBox groupBox8;
     }
 }

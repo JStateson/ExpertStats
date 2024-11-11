@@ -101,6 +101,7 @@ namespace ExpertStats
                 StopWalking();
                 return 0;
             }
+
             tbPage.Text = CurrentPage.ToString();
             return Convert.ToInt32(a);
         }
