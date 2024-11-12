@@ -60,7 +60,7 @@ namespace ExpertStats
             webView21.Visible = false;
             webView21.Size = new System.Drawing.Size(0, 0);
             AllPostInfo.Init(Cutoff);
-            StartPage = CurrentPage+1;
+            StartPage = CurrentPage + 1;
             InitializeAsync();
             StartWalking();
         }
@@ -68,7 +68,7 @@ namespace ExpertStats
         private int DaysElapsed(DateTime dt, ref bool bDone)
         {
             TimeSpan d = StartDate - dt;
-            bDone =  (d.Days >= DaysWanted) ;
+            bDone = (d.Days >= DaysWanted);
             return d.Days;
         }
 
@@ -110,21 +110,21 @@ namespace ExpertStats
         {
             WalkCount++;
             pbAll.Value = GetProgress();
-            if(ParseCode != 0 || bError)
+            if (ParseCode != 0 || bError)
             {
                 StopWalking();
                 return;
             }
-            if(WalkingPtr == 0)
+            if (WalkingPtr == 0)
             {
                 if (TaskBusy) return;
                 WalkCount = 0;
-                WalkingPtr=1;
+                WalkingPtr = 1;
                 TaskBusy = true;
                 webView21.CoreWebView2.Navigate(FormUrl());
                 return;
             }
-            if(WalkingPtr == 1)
+            if (WalkingPtr == 1)
             {
                 if (TaskBusy) return;
                 WalkCount = 0;
@@ -136,12 +136,12 @@ namespace ExpertStats
 
         private async void webView21_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {
-            if(e.IsSuccess)
+            if (e.IsSuccess)
             {
 
                 htmlContent = await webView21.CoreWebView2.ExecuteScriptAsync("document.documentElement.querySelector('body').innerHTML");
                 htmlContent = htmlContent.Trim('"').Replace("\\u003C", "<").Replace("\\u003E", ">").Replace("\\\"", "\"");
-                if(CurrentPage == StartPage)
+                if (CurrentPage == StartPage)
                 {
                     AvailablePages = AllPostInfo.GetExpectedPages(ref htmlContent);
                     if (AvailablePages <= 0)
@@ -165,6 +165,13 @@ namespace ExpertStats
         {
             StopWalking();
         }
-    }
 
+        private void WebForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (webView21 != null)
+            {
+                webView21.Dispose();
+            }
+        }
+    }
 }

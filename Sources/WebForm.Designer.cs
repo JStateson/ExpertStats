@@ -133,6 +133,7 @@
             this.Controls.Add(this.webView21);
             this.Name = "WebForm";
             this.Text = "WebForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WebForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
