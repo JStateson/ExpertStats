@@ -18,3 +18,5 @@ MonthsThroughput:  Shows the completions done monthly
 
 UserPosts: Shows the total volunteer posts: Solved, Kudo'ed and No Response.
    Data was scaled to %100 and normalized for days worked.
+
+The zip and the application require 7z and a password
