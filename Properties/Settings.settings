@@ -5,5 +5,11 @@
     <Setting Name="DateToUse" Type="System.String" Scope="User">
       <Value Profile="(Default)">01-01-2024</Value>
     </Setting>
+    <Setting Name="StartPW" Type="System.String" Scope="User">
+      <Value Profile="(Default)">xyzzy</Value>
+    </Setting>
+    <Setting Name="PWallowed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

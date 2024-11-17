@@ -86,6 +86,7 @@ namespace ExpertStats
         public ExpertInfo()
         {
             InitializeComponent();
+            CheckCredentials();
             SetCutoffDate();
             CreateNeededStuff();
             //Start();
@@ -143,6 +144,15 @@ namespace ExpertStats
             }
         }
 
+        private void CheckCredentials()
+        {
+            if(!Properties.Settings.Default.PWallowed)
+            {
+                help MainHelp = new help();
+                MainHelp.ShowDialog();
+                MainHelp.Dispose();
+            }
+        }
         private void Start()
         {
             if (File.Exists(sContactList))

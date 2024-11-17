@@ -34,5 +34,29 @@ namespace ExpertStats.Properties {
                 this["DateToUse"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("xyzzy")]
+        public string StartPW {
+            get {
+                return ((string)(this["StartPW"]));
+            }
+            set {
+                this["StartPW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PWallowed {
+            get {
+                return ((bool)(this["PWallowed"]));
+            }
+            set {
+                this["PWallowed"] = value;
+            }
+        }
     }
 }
